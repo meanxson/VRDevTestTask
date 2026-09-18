@@ -1,0 +1,85 @@
+{
+  "title": "Досмотр на контрольно-пропускном пункте",
+  "groups": [
+    {
+      "title": "Проверка документов",
+      "briefing": "Подойдите к стойке контроля, возьмите паспорт и подтвердите проверку на терминале.",
+      "steps": [
+        {
+          "id": 1,
+          "description": "Подойдите к стойке контроля",
+          "expectedAction": "подойти",
+          "target": "counter_zone"
+        },
+        {
+          "id": 2,
+          "description": "Возьмите паспорт со стойки",
+          "expectedAction": "граб",
+          "target": "passport"
+        },
+        {
+          "id": 3,
+          "description": "Нажмите «Подтвердить» на терминале",
+          "expectedAction": "нажать кнопку",
+          "target": "confirm_button"
+        }
+      ]
+    },
+    {
+      "title": "Осмотр багажа",
+      "briefing": "Подойдите к ленте досмотра, поставьте на неё чемодан и укажите запрещённый предмет.",
+      "steps": [
+        {
+          "id": 1,
+          "description": "Подойдите к ленте досмотра",
+          "expectedAction": "подойти",
+          "target": "scanner_zone"
+        },
+        {
+          "id": 2,
+          "description": "Возьмите чемодан пассажира",
+          "expectedAction": "граб",
+          "target": "suitcase"
+        },
+        {
+          "id": 3,
+          "description": "Укажите лучом на запрещённый предмет",
+          "expectedAction": "клик",
+          "target": "forbidden_item"
+        }
+      ]
+    },
+    {
+      "title": "Оформление прохода",
+      "briefing": "Подойдите к турникету, считайте пропуск сканером и откройте проход с пульта.",
+      "steps": [
+        {
+          "id": 1,
+          "description": "Подойдите к турникету",
+          "expectedAction": "подойти",
+          "target": "gate_zone"
+        },
+        {
+          "id": 2,
+          "description": "Считайте пропуск сканером",
+          "expectedAction": "клик",
+          "target": "gate_scanner"
+        },
+        {
+          "id": 3,
+          "description": "Встаньте к пульту и нажмите «Открыть проход»",
+          "expectedActions": [
+            {
+              "action": "подойти",
+              "target": "control_zone"
+            },
+            {
+              "action": "нажать кнопку",
+              "target": "open_gate_button"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

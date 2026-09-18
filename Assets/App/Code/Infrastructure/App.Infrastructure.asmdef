@@ -1,0 +1,18 @@
+{
+    "name": "App.Infrastructure",
+    "rootNamespace": "App.Infrastructure",
+    "references": [
+        "GUID:e6ec85d10475222498b10ccee9358f4c",
+        "GUID:88e12edc5d5812041bb4113cace3ab56",
+        "GUID:4389f19511aa8764bada2f8147aa8b0e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
