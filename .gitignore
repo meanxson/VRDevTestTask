@@ -115,3 +115,7 @@ InitTestScene*.unity*
 
 # JetBrains IDE
 /.idea/
+
+# Скриншоты для диагностики, не часть проекта
+/Assets/Screenshots/
+/Assets/Screenshots.meta
