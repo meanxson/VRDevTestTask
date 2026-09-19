@@ -1,4 +1,5 @@
 ﻿using App.Presentation.Core;
+using UnityEngine;
 
 namespace App.Presentation.Bootstrap
 {
@@ -8,7 +9,13 @@ namespace App.Presentation.Bootstrap
     /// Отдельный компонент нужен потому, что сцена может открываться и из лобби,
     /// и напрямую из редактора, и после перезапуска по кнопке "Попытаться ещё" —
     /// во всех случаях попытка должна начинаться одинаково.
+    ///
+    /// Порядок выполнения задан явно и намеренно поздний: запуск сценария сразу
+    /// рассылает события о первой группе и первом шаге, и если бы он случился
+    /// раньше подписок представления, подсветка и чек-лист пропустили бы их.
+    /// Полагаться на порядок компонентов в сцене здесь нельзя — Unity его не гарантирует.
     /// </summary>
+    [DefaultExecutionOrder(1000)]
     public sealed class TrainingSceneBootstrap : AppBehaviour
     {
         protected override void OnReady()
