@@ -59,15 +59,23 @@ namespace App.Presentation.Ui
             return builder.ToString();
         }
 
+        /// <summary>
+        /// Значок статуса.
+        ///
+        /// Набор подобран по фактическому составу шрифта: галочки и стрелок-дингбатов
+        /// (U+2714, U+2716, U+27A4) в Liberation Sans нет, и они рисовались бы пустыми
+        /// квадратами. Геометрические фигуры в шрифте есть, и они дают понятный ряд:
+        /// пустой кружок ждёт, указатель отмечает текущий шаг, залитый кружок — успех.
+        /// </summary>
         private static string MarkerOf(StepStatus status)
         {
             switch (status)
             {
-                case StepStatus.Active: return "➤";
-                case StepStatus.Succeeded: return "✔";
-                case StepStatus.Failed: return "✖";
-                case StepStatus.Skipped: return "—";
-                default: return "•";
+                case StepStatus.Active: return "►";      // ► текущий шаг
+                case StepStatus.Succeeded: return "●";   // ● выполнен
+                case StepStatus.Failed: return "×";      // × выполнен с ошибкой
+                case StepStatus.Skipped: return "–";     // – пропущен
+                default: return "○";                     // ○ ожидает
             }
         }
 
