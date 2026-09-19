@@ -54,8 +54,26 @@ Shader "App/Outline"
             {
                 Varyings output;
 
-                float3 expanded = input.positionOS.xyz + normalize(input.normalOS) * _OutlineWidth;
-                output.positionCS = TransformObjectToHClip(expanded);
+                // Раздвигаем вершины в МИРОВОМ пространстве, а не в объектном:
+                // иначе толщина контура умножается на масштаб объекта и у сплющенных
+                // или сильно вытянутых мешей получается разной по осям — вплоть
+                // до полностью невидимой.
+                float3 positionWS = TransformObjectToWorld(input.positionOS.xyz);
+                float3 centerWS = TransformObjectToWorld(float3(0, 0, 0));
+
+                // Направление берём от центра объекта, а не из нормали вершины.
+                // У примитивов Unity нормали жёсткие: на кубе их шесть, по одной
+                // на грань, и раздвигание вдоль них разносит грани в стороны —
+                // оболочка рвётся по рёбрам, контур виден только местами.
+                // Радиальное направление для выпуклого меша всегда даёт замкнутую
+                // оболочку и не требует сглаженных нормалей в самом меше.
+                float3 outward = positionWS - centerWS;
+                float lengthSq = dot(outward, outward);
+                float3 direction = lengthSq > 1e-8
+                    ? outward * rsqrt(lengthSq)
+                    : normalize(TransformObjectToWorldNormal(input.normalOS));
+
+                output.positionCS = TransformWorldToHClip(positionWS + direction * _OutlineWidth);
 
                 return output;
             }
