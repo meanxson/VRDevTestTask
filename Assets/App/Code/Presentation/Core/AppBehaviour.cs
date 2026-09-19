@@ -8,26 +8,31 @@ namespace App.Presentation.Core
     /// <summary>
     /// База для компонентов сцены, которым нужны юзкейсы и события приложения.
     ///
-    /// Берёт сборку в Start, а не в Awake: к этому моменту композиционный корень
-    /// точно отработал, в каком бы порядке Unity ни создавала объекты.
+    /// Зависимости компонент не ищет — их приносит композиционный корень сразу
+    /// после загрузки сцены, до первого Start. Поэтому здесь нет ни обращения
+    /// к глобальной точке доступа, ни зависимости от порядка создания объектов.
+    ///
     /// Подписки, сделанные через Subscribe, снимаются автоматически при уничтожении
     /// объекта — забыть отписаться нельзя.
     /// </summary>
-    public abstract class AppBehaviour : MonoBehaviour
+    public abstract class AppBehaviour : MonoBehaviour, IAppDependent
     {
         private readonly List<IDisposable> _subscriptions = new List<IDisposable>();
 
         /// <summary>Собранное приложение. Доступно начиная с OnReady.</summary>
         protected AppComposition App { get; private set; }
 
+        public void Construct(AppComposition app)
+        {
+            App = app;
+        }
+
         protected virtual void Start()
         {
-            App = AppServices.Current;
-
             if (App == null)
             {
                 Debug.LogError(
-                    "Не найден композиционный корень: положите объект с AppRoot в сцену.", this);
+                    "Зависимости не получены: положите объект с AppRoot в сцену.", this);
                 enabled = false;
                 return;
             }
@@ -43,7 +48,7 @@ namespace App.Presentation.Core
             _subscriptions.Clear();
         }
 
-        /// <summary>Вызывается один раз, когда приложение доступно.</summary>
+        /// <summary>Вызывается один раз, когда зависимости получены.</summary>
         protected abstract void OnReady();
 
         /// <summary>Подписаться на событие шины на время жизни компонента.</summary>
